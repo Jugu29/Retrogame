@@ -59,7 +59,7 @@ def tirs_deplacement(tirs_liste):
 def update():
     """Mise à jour des variables (30 fois par seconde)"""
     global vaisseau_x, vaisseau_y, tirs_liste
-
+    print(pyxel.frame_count)
     # Déplacement du vaisseau
     vaisseau_x, vaisseau_y = vaisseau_deplacement_Droite_Gauche(vaisseau_x, vaisseau_y)
     vaisseau_x, vaisseau_y = vaisseau_deplacement_Bas_Haut(vaisseau_x, vaisseau_y)
@@ -78,11 +78,18 @@ def draw():
     pyxel.cls(0)  # Vide la fenêtre
 
     # Vaisseau (image 8x8)
-    pyxel.blt(vaisseau_x, vaisseau_y, 0, 0, 0, 8, 8)
-
+    if pyxel.frame_count%30 == 0:
+        pyxel.blt(vaisseau_x, vaisseau_y, 0, 0, 0, 8, 8)
+    else:
+        pyxel.blt(vaisseau_x, vaisseau_y, 0, 8, 0, 8, 8)
+    
     # Dessin des tirs
     for tir in tirs_liste:
-        pyxel.rect(tir[0], tir[1], tir_largeur, tir_hauteur, 10)  # Rectangle du tir
+        pyxel.rect(tir[0], tir[1], tir_largeur, tir_hauteur, 5)  # Rectangle du tir + couleur
+
+# Lancement du programme principal
+pyxel.run(update, draw)
+
 
 # Lancement du programme principal
 pyxel.run(update, draw)
