@@ -2,11 +2,15 @@ import pyxel
 import random
 
 # taille de la fenêtre 128x128 pixels
-pyxel.init(128, 128, title="Retro game")
+
+ecran_l = 128
+ecran_h = 128
+
+pyxel.init(ecran_l, ecran_h, title="Retro game")
 
 # Position et taille du vaisseau
-vaisseau_x = 60
-vaisseau_y = 60
+vaisseau_x = 58
+vaisseau_y = 58
 vaisseau_l = 8
 vaisseau_h = 8
 
