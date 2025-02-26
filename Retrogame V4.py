@@ -13,6 +13,9 @@ vaisseau_y = 100
 vaisseau_l = 8
 vaisseau_h = 8
 
+# initialisation des explosions
+explosions_liste = []
+
 # Liste des ennemis
 ennemis_liste = []
 
@@ -49,7 +52,6 @@ def tirs_deplacement():
 def ennemis_creation():
     """Ajoute 4 ennemis à des positions différentes toutes les secondes"""
     if pyxel.frame_count % 30 == 0:
-        for _ in range(4):  # Générer 4 ennemis
             x = random.randint(0, ecran_l - 8)
             y = 0
             ennemis_liste.append([x, y])
@@ -60,6 +62,26 @@ def ennemis_maj():
         ennemi[1] += 1
         if ennemi[1] > ecran_h:
             ennemis_liste.remove(ennemi)
+
+def collision(x1,  y1, l1, h1, x2, y2, l2, h2):
+    """
+    x1:abscisse de l'objet1
+    y1:ordonnée de l'objet1
+    l1:largeur de l'objet1
+    h1:hauteur de l'objet1
+    x2:abscisse de l'objet2
+    y2:ordonnée de l'objet2
+    l2:largeur de l'objet2
+    h2:hauteur de l'objet2
+    Retourne True si collision, False sinon
+    """
+    if x1 <= x2+l2 and x1+l1>=x2 and y1 <= y2+h2 and y1+h1>=y2:
+        return True
+    return False
+
+def explosions_creation(x, y):
+    """explosions aux points de collision entre deux objets"""
+    explosions_liste.append([x, y, 0])
 
 # Mise à jour
 def update():
@@ -86,5 +108,8 @@ def draw():
     for ennemi in ennemis_liste:
         sprite_x = 0 if pyxel.frame_count % 30 == 0 else 8
         pyxel.blt(ennemi[0], ennemi[1], 1, sprite_x, 0, 8, 8)
+    # explosions (cercles de plus en plus grands)
+    for explosion in explosions_liste:
+        pyxel.circb(explosion[0]+4, explosion[1]+4, 2*(explosion[2]//4), 8+explosion[2]%3) 
 
 pyxel.run(update, draw)
